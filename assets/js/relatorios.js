@@ -675,3 +675,209 @@ window.gerarRelatorioCliente = gerarRelatorioCliente;
 window.gerarRelatorioEstoqueBaixo = gerarRelatorioEstoqueBaixo;
 window.gerarRelatorioMaisVendidos = gerarRelatorioMaisVendidos;
 window.limparRelatorio = limparRelatorio;
+
+// ============================================================
+//  BANCO DE DADOS DE VENDAS (MOCK PARA ALIMENTAR OS RELATÓRIOS)
+// ============================================================
+const vendasBD = [
+  { id: "GS-8821", clienteId: 1, clienteNome: "Bruce Wayne", data: "2026-01-15", formaPagamento: "Pix", total: 450.00, itens: [{ produtoId: 101, nome: "Naruto Vol. 01", categoria: "mangas", quantidade: 2, preco: 35.00 }, { produtoId: 103, nome: "Action Figure Goku", categoria: "colecionaveis", quantidade: 1, preco: 380.00 }] },
+  { id: "GS-8822", clienteId: 2, clienteNome: "Peter Parker", data: "2026-02-10", formaPagamento: "Crédito", total: 79.90, itens: [{ produtoId: 102, nome: "O Senhor dos Anéis", categoria: "livros", quantidade: 1, preco: 79.90 }] },
+  { id: "GS-8823", clienteId: 1, clienteNome: "Bruce Wayne", data: "2026-03-22", formaPagamento: "Dinheiro", total: 143.82, itens: [{ produtoId: 102, nome: "O Senhor dos Anéis", categoria: "livros", quantidade: 2, preco: 79.90 }] }, // com desconto aplicado
+  { id: "GS-8824", clienteId: 3, clienteNome: "Clark Kent", data: "2026-04-05", formaPagamento: "Débito", total: 70.00, itens: [{ produtoId: 101, nome: "Naruto Vol. 01", categoria: "mangas", quantidade: 2, preco: 35.00 }] },
+  { id: "GS-8825", clienteId: 4, clienteNome: "Diana Prince", data: "2026-05-18", formaPagamento: "Pix", total: 760.00, itens: [{ produtoId: 103, nome: "Action Figure Goku", categoria: "colecionaveis", quantidade: 2, preco: 380.00 }] },
+  { id: "GS-8826", clienteId: 2, clienteNome: "Peter Parker", data: "2026-06-01", formaPagamento: "Pix", total: 105.00, itens: [{ produtoId: 101, nome: "Naruto Vol. 01", categoria: "mangas", quantidade: 3, preco: 35.00 }] },
+  { id: "GS-8827", clienteId: 1, clienteNome: "Bruce Wayne", data: "2026-06-24", formaPagamento: "Crédito", total: 380.00, itens: [{ produtoId: 103, nome: "Action Figure Goku", categoria: "colecionaveis", quantidade: 1, preco: 380.00 }] }
+];
+
+const mesesNomes = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
+// ============================================================
+//  LÓGICA - QUINTA (MANHÃ): RELATÓRIO POR PERÍODO
+// ============================================================
+function inicializarDatasFiltro() {
+  // Define o mês atual como padrão nos inputs de data
+  const hoje = new Date();
+  const primeiroDiaMes = new Date(hoje.getFullYear(), hoje.getMonth(), 1).toISOString().split('T')[0];
+  const ultimoDiaMes = hoje.toISOString().split('T')[0];
+
+  document.getElementById('dataInicio').value = primeiroDiaMes;
+  document.getElementById('dataFim').value = ultimoDiaMes;
+  
+  filtrarRelatorioPeriodo();
+}
+
+function filtrarRelatorioPeriodo() {
+  const dataInicioStr = document.getElementById('dataInicio').value;
+  const dataFimStr = document.getElementById('dataFim').value;
+
+  if (!dataInicioStr || !dataFimStr) {
+    alert("Por favor, preencha ambas as datas.");
+    return;
+  }
+
+  const dataInicio = new Date(dataInicioStr + "T00:00:00");
+  const dataFim = new Date(dataFimStr + "T23:59:59");
+
+  let totalArrecadado = 0;
+  let contadorPedidos = 0;
+  let rankingProdutos = {};
+
+  // Filtra as vendas baseado no range de datas
+  vendasBD.forEach(venda => {
+    const dataVenda = new Date(venda.data + "T00:00:00");
+    if (dataVenda >= dataInicio && dataVenda <= dataFim) {
+      totalArrecadado += venda.total;
+      contadorPedidos++;
+
+      // Agrupa e soma quantidades/faturamento de itens vendidos
+      venda.itens.forEach(item => {
+        if (!rankingProdutos[item.produtoId]) {
+          rankingProdutos[item.produtoId] = {
+            nome: item.nome,
+            categoria: item.categoria,
+            quantidade: 0,
+            faturamento: 0
+          };
+        }
+        rankingProdutos[item.produtoId].quantidade += item.quantidade;
+        rankingProdutos[item.produtoId].faturamento += (item.quantidade * item.preco);
+      });
+    }
+  });
+
+  // Atualiza os indicadores superiores em tela
+  document.getElementById('kpi-periodo-arrecadado').innerText = `R$ ${totalArrecadado.toFixed(2)}`;
+  document.getElementById('kpi-periodo-pedidos').innerText = contadorPedidos;
+
+  // Transforma o agrupado em array para ordenação (Mais vendidos primeiro)
+  const produtosOrdenados = Object.values(rankingProdutos).sort((a, b) => b.quantidade - a.quantidade);
+  
+  // Renderiza a tabela do ranking
+  const tabelaCorpo = document.getElementById('table-periodo-produtos');
+  tabelaCorpo.innerHTML = '';
+
+  if (produtosOrdenados.length === 0) {
+    tabelaCorpo.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--muted); padding: 20px;">Nenhuma movimentação comercial neste período.</td></tr>`;
+  } else {
+    produtosOrdenados.forEach(prod => {
+      tabelaCorpo.innerHTML += `
+        <tr>
+          <td><span style="font-weight: 500; color: var(--white);">${prod.nome}</span></td>
+          <td><span style="text-transform: capitalize; font-size: 13px; color: var(--muted);">${prod.categoria}</span></td>
+          <td style="text-align: center; font-weight: 600;">${prod.quantidade}</td>
+          <td style="text-align: right; color: var(--blue-l); font-weight: 500;">R$ ${prod.faturamento.toFixed(2)}</td>
+        </tr>
+      `;
+    });
+  }
+}
+
+// ============================================================
+//  LÓGICA - QUINTA (TARDE): RELATÓRIO POR CLIENTE
+// ============================================================
+function popularFiltroClientes() {
+  const select = document.getElementById('clienteRelatorio');
+  select.innerHTML = '<option value="">Selecione um cliente cadastrado...</option>';
+  
+  // Mapeia os clientes existentes no sistema
+  const clientesMock = [
+    { id: 1, nome: "Bruce Wayne" },
+    { id: 2, nome: "Peter Parker" },
+    { id: 3, nome: "Clark Kent" },
+    { id: 4, nome: "Diana Prince" }
+  ];
+
+  clientesMock.forEach(c => {
+    select.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
+  });
+}
+
+function analisarHistoricoCliente() {
+  const clienteId = parseInt(document.getElementById('clienteRelatorio').value);
+  const kpisBloco = document.getElementById('cliente-kpis-bloco');
+  const tabelaBloco = document.getElementById('cliente-tabela-bloco');
+  const tabelaCorpo = document.getElementById('table-cliente-historico');
+
+  if (!clienteId) {
+    kpisBloco.style.display = 'none';
+    tabelaBloco.style.display = 'none';
+    return;
+  }
+
+  let totalGasto = 0;
+  let frequenciaCompras = 0;
+  tabelaCorpo.innerHTML = '';
+
+  // Filtra as vendas vinculadas ao cliente selecionado
+  vendasBD.forEach(venda => {
+    if (venda.clienteId === clienteId) {
+      totalGasto += venda.total;
+      frequenciaCompras++;
+
+      // Consolida os nomes dos produtos comprados na mesma linha
+      const descricaoItens = venda.itens.map(i => `${i.nome} (x${i.quantidade})`).join(', ');
+
+      // Converte data americana para formato brasileiro
+      const dataFormatada = venda.data.split('-').reverse().join('/');
+
+      tabelaCorpo.innerHTML += `
+        <tr>
+          <td><span style="font-family: monospace; color: var(--muted);">${venda.id}</span></td>
+          <td>${dataFormatada}</td>
+          <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${descricaoItens}">${descricaoItens}</td>
+          <td><span class="badge badge-muted">${venda.formaPagamento}</span></td>
+          <td style="text-align: right; font-weight: 600; color: var(--white);">R$ ${venda.total.toFixed(2)}</td>
+        </tr>
+      `;
+    }
+  });
+
+  // Atualiza elementos visuais do cliente
+  document.getElementById('kpi-cliente-gasto').innerText = `R$ ${totalGasto.toFixed(2)}`;
+  document.getElementById('kpi-cliente-compras').innerText = `${frequenciaCompras} ${frequenciaCompras === 1 ? 'pedido' : 'pedidos'}`;
+
+  kpisBloco.style.display = 'grid';
+  tabelaBloco.style.display = 'block';
+}
+
+// ============================================================
+//  LÓGICA - QUINTA (TARDE): RENDERIZADOR DO GRÁFICO ANUAL
+// ============================================================
+function renderizarGraficoAnual() {
+  const containerGrafico = document.getElementById('grafico-barras-anual');
+  containerGrafico.innerHTML = '';
+
+  // Cria um acumulador financeiro indexado para os 12 meses (Janeiro a Dezembro)
+  let faturamentoMensal = new Array(12).fill(0);
+
+  // Consolida o faturamento somando as parcelas em seus meses correspondentes
+  vendasBD.forEach(venda => {
+    const mesIndex = new Date(venda.data + "T00:00:00").getMonth();
+    faturamentoMensal[mesIndex] += venda.total;
+  });
+
+  // Encontra o maior faturamento mensal para atuar como teto de proporção 100% da altura CSS
+  const faturamentoMaximo = Math.max(...faturamentoMensal, 1);
+
+  // Monta a estrutura de colunas dinamicamente
+  faturamentoMensal.forEach((valorMes, index) => {
+    const percentualAltura = (valorMes / faturamentoMaximo) * 100;
+    const mesNome = mesesNomes[index];
+
+    containerGrafico.innerHTML += `
+      <div class="chart-bar-wrapper">
+        <div class="chart-bar-fill" style="height: ${percentualAltura}%;">
+          <div class="chart-bar-tooltip">R$ ${valorMes.toFixed(2)}</div>
+        </div>
+        <span class="chart-label">${mesNome}</span>
+      </div>
+    `;
+  });
+}
+
+// Inicializa todos os módulos assim que o documento HTML estiver pronto
+document.addEventListener("DOMContentLoaded", () => {
+  inicializarDatasFiltro();
+  popularFiltroClientes();
+  renderizarGraficoAnual();
+});

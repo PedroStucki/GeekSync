@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDV - GeekSync</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+
+    <div id="section-pdv" class="sub-page" style="display:block; padding:20px;">
+
+        <!-- Header -->
+        <div class="page-header" style="margin-bottom:20px;">
+            <div>
+                <h1>🛒 PDV - Registro de Venda</h1>
+                <p style="color:var(--muted); font-size:14px;">Realize vendas e aplique descontos automaticamente</p>
+            </div>
+        </div>
+
+        <!-- PDV Container -->
+        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:24px;">
+
+            <!-- Painel Esquerdo - Carrinho -->
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Seleção de Cliente -->
+                    <div style="margin-bottom:20px;">
+                        <label class="form-label">Cliente</label>
+                        <select id="pdv-cliente" class="form-input">
+                            <option value="">Selecione um cliente (Opcional)</option>
+                        </select>
+                    </div>
+
+                    <!-- Adicionar Produto -->
+                    <div style="display:grid; grid-template-columns: 2fr 0.8fr 0.8fr; gap:12px; margin-bottom:20px;">
+                        <div>
+                            <label class="form-label">Produto</label>
+                            <select id="pdv-produto" class="form-input">
+                                <option value="">Selecione um produto...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label">Quantidade</label>
+                            <input type="number" id="pdv-qtd" class="form-input" value="1" min="1">
+                        </div>
+                        <div style="display:flex; align-items:flex-end;">
+                            <button type="button" class="btn btn-primary" style="width:100%;" onclick="adicionarItemPDV()">
+                                <i class="bi bi-plus-circle"></i>
+                                Adicionar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabela do Carrinho -->
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Cat.</th>
+                                    <th>Qtd</th>
+                                    <th>Preço Un.</th>
+                                    <th>Desc.</th>
+                                    <th>Subtotal</th>
+                                    <th style="width:50px;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="pdv-carrinho-corpo">
+                                <tr>
+                                    <td colspan="7" class="empty">
+                                        <p>Carrinho vazio. Adicione produtos.</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Painel Direito - Resumo -->
+            <div class="card">
+                <div class="card-body">
+
+                    <h3 style="font-size:18px; margin-bottom:4px;">📋 Resumo do Pedido</h3>
+                    <hr style="border:0; border-top:1px solid var(--border); margin:12px 0;">
+
+                    <div style="display:flex; justify-content:space-between; padding:8px 0;">
+                        <span style="color:var(--muted);">Subtotal dos Itens:</span>
+                        <span id="pdv-subtotal-geral">R$ 0,00</span>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; padding:8px 0;">
+                        <span style="color:var(--muted);">Descontos (10% Livros/Mangás):</span>
+                        <span id="pdv-desconto-geral" style="color:var(--success);">- R$ 0,00</span>
+                    </div>
+
+                    <!-- Forma de Pagamento -->
+                    <div style="margin-top:12px;">
+                        <label class="form-label">Forma de Pagamento</label>
+                        <select id="pdv-pagamento" class="form-input">
+                            <option value="dinheiro">Dinheiro</option>
+                            <option value="pix">Pix</option>
+                            <option value="credito">Cartão de Crédito</option>
+                            <option value="debito">Cartão de Débito</option>
+                        </select>
+                    </div>
+
+                    <hr style="border:0; border-top:1px solid var(--border); margin:12px 0;">
+
+                    <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:1.2rem; font-weight:700;">
+                        <span>Total a Pagar:</span>
+                        <span id="pdv-total-geral" style="color:var(--blue);">R$ 0,00</span>
+                    </div>
+
+                    <button type="button" class="btn btn-success" style="width:100%; padding:14px; font-size:16px; margin-top:10px;" onclick="finalizarVendaPDV()">
+                        <i class="bi bi-check-circle"></i>
+                        Confirmar e Finalizar Venda
+                    </button>
+
+                    <button type="button" class="btn btn-secondary" style="width:100%; padding:10px; font-size:14px; margin-top:8px;" onclick="limparCarrinhoPDV()">
+                        <i class="bi bi-trash"></i>
+                        Limpar Carrinho
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+         SCRIPTS
+    ============================================================ -->
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/pdv.js"></script>
+
+</body>
+
+</html>

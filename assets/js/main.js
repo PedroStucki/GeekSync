@@ -1,4 +1,4 @@
-// js/main.js
+// assets/js/main.js
 // Inicialização Principal do Sistema
 
 // ============================================================
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const usuario = getUsuarioLogado();
 
     if (token && usuario) {
-        // Usuário já autenticado
         console.log('✅ Usuário autenticado:', usuario.nome);
         
         document.getElementById('page-login').classList.remove('active');
@@ -27,7 +26,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         await carregarTodasPaginas();
         await carregarDadosIniciais();
     } else {
-        // Usuário não autenticado - mostrar login
         console.log('🔐 Usuário não autenticado');
         document.getElementById('page-login').classList.add('active');
         document.getElementById('page-app').classList.remove('active');
@@ -46,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ============================================================
 
 async function carregarTodasPaginas() {
-    const paginas = ['clientes', 'produtos', 'vendas', 'relatorios'];
+    const paginas = ['dashboard', 'clientes', 'produtos', 'pdv', 'vendas', 'relatorios'];
     
     for (const pagina of paginas) {
         await carregarPagina(pagina);
@@ -57,7 +55,12 @@ async function carregarPagina(section) {
     try {
         console.log(`📄 Carregando página: ${section}`);
         
+        // 🔥 CAMINHO CORRETO
         const response = await fetch(`pages/${section}.html`);
+        
+        // 🔥 LOG PARA DEBUG
+        console.log(`🔍 Buscando: pages/${section}.html`);
+        console.log(`📊 Status: ${response.status}`);
         
         if (!response.ok) {
             console.warn(`⚠️ Página ${section}.html não encontrada (status: ${response.status})`);
@@ -68,6 +71,9 @@ async function carregarPagina(section) {
                         <p>⚠️ Página ${section} não encontrada.</p>
                         <p style="font-size:.8rem; color:var(--muted);">
                             Verifique se o arquivo <strong>pages/${section}.html</strong> existe.
+                        </p>
+                        <p style="font-size:.8rem; color:var(--muted);">
+                            Caminho atual: <strong>${window.location.pathname}</strong>
                         </p>
                     </div>
                 `;
@@ -82,7 +88,6 @@ async function carregarPagina(section) {
             console.log(`✅ Página ${section} carregada`);
         }
 
-        // 🔥 IMPORTANTE: Inicializar módulo específico APÓS carregar o HTML
         await inicializarModulo(section);
 
     } catch (error) {
@@ -102,13 +107,22 @@ async function carregarPagina(section) {
 }
 
 // ============================================================
-//  INICIALIZAR MÓDULOS (APÓS CARREGAR O HTML)
+//  INICIALIZAR MÓDULOS
 // ============================================================
 
 async function inicializarModulo(section) {
     console.log(`🔧 Inicializando módulo: ${section}`);
     
     switch(section) {
+        case 'dashboard':
+            if (typeof carregarDashboard === 'function') {
+                await carregarDashboard();
+                console.log('✅ Dashboard inicializado');
+            } else {
+                console.warn('⚠️ carregarDashboard não está definido');
+            }
+            break;
+            
         case 'clientes':
             if (typeof carregarClientes === 'function') {
                 await carregarClientes();
@@ -127,71 +141,43 @@ async function inicializarModulo(section) {
             }
             break;
             
+        case 'pdv':
+            if (typeof carregarDadosPDV === 'function') {
+                await carregarDadosPDV();
+                console.log('✅ PDV inicializado');
+            } else {
+                console.warn('⚠️ carregarDadosPDV não está definido');
+            }
+            break;
+            
         case 'vendas':
-            // 🔥 CHAMAR AS FUNÇÕES DE INICIALIZAÇÃO DO VENDAS.JS
             if (typeof carregarDadosVenda === 'function') {
                 await carregarDadosVenda();
                 console.log('✅ Dados de venda carregados');
-            } else {
-                console.warn('⚠️ carregarDadosVenda não está definido');
             }
-            
             if (typeof carregarVendasAbertas === 'function') {
                 await carregarVendasAbertas();
                 console.log('✅ Vendas abertas carregadas');
             }
-            
             if (typeof listarVendas === 'function') {
                 await listarVendas();
                 console.log('✅ Histórico de vendas carregado');
             }
-            
-            // Configurar eventos do vendas.js
             if (typeof configurarEventosVendas === 'function') {
                 configurarEventosVendas();
                 console.log('✅ Eventos de vendas configurados');
             }
-            
             console.log('✅ Vendas inicializado');
             break;
             
         case 'relatorios':
-            if (typeof carregarResumoRapido === 'function') {
-                await carregarResumoRapido();
-                console.log('✅ Resumo rápido carregado');
+            if (typeof inicializarRelatorios === 'function') {
+                await inicializarRelatorios();
+                console.log('✅ Relatórios inicializado');
             } else {
-                console.warn('⚠️ carregarResumoRapido não está definido');
+                console.warn('⚠️ inicializarRelatorios não está definido');
             }
-            
-            if (typeof carregarSelectClientes === 'function') {
-                await carregarSelectClientes();
-                console.log('✅ Select de clientes carregado');
-            }
-            
-            // Configurar datas
-            configurarDatasRelatorio();
-            
-            console.log('✅ Relatórios inicializado');
             break;
-    }
-}
-
-// ============================================================
-//  CONFIGURAR DATAS DO RELATÓRIO
-// ============================================================
-
-function configurarDatasRelatorio() {
-    const dataInicio = document.getElementById('dataInicio');
-    if (dataInicio) {
-        const hoje = new Date();
-        const primeiroDia = new Date(hoje.getFullYear(), hoje.getMonth(), 1);
-        dataInicio.value = primeiroDia.toISOString().split('T')[0];
-    }
-    
-    const dataFim = document.getElementById('dataFim');
-    if (dataFim) {
-        const hoje = new Date();
-        dataFim.value = hoje.toISOString().split('T')[0];
     }
 }
 
@@ -203,7 +189,6 @@ async function carregarDadosIniciais() {
     try {
         console.log('📊 Carregando dados iniciais...');
         
-        // Carregar dados em paralelo
         const promises = [];
         
         if (typeof carregarClientes === 'function') {
@@ -232,6 +217,5 @@ window.carregarPagina = carregarPagina;
 window.carregarTodasPaginas = carregarTodasPaginas;
 window.carregarDadosIniciais = carregarDadosIniciais;
 window.inicializarModulo = inicializarModulo;
-window.configurarDatasRelatorio = configurarDatasRelatorio;
 
 console.log('✅ main.js carregado com sucesso!');

@@ -7,7 +7,7 @@
     <title>Relatórios</title>
     
     <!-- CSS -->
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../GeekSync-front/assets/css/style.css">
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -150,21 +150,117 @@
             </div>
         </div>
 
-        <!-- Resultado do Relatório -->
-        <div id="resultadoRelatorio">
-            <div class="empty">
-                <p>Selecione um filtro e clique em "Gerar" para visualizar o relatório</p>
+      <!-- Resultado do Relatório -->
+<div id="resultadoRelatorio">
+
+    <!-- RELATÓRIO POR PERÍODO -->
+    <div id="subpage-relatorio-periodo" class="card" style="margin-bottom:24px;">
+
+        <div class="dashboard-grid">
+            <div class="kpi-card">
+                <span class="kpi-label">Arrecadação Bruta</span>
+                <div id="kpi-periodo-arrecadado" class="kpi-val">R$ 0,00</div>
             </div>
+
+            <div class="kpi-card">
+                <span class="kpi-label">Volume de Pedidos</span>
+                <div id="kpi-periodo-pedidos" class="kpi-val">0</div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:20px;">
+            <h3>Produtos Mais Vendidos</h3>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Categoria</th>
+                            <th>Qtd.</th>
+                            <th>Total Faturado</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="table-periodo-produtos">
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- RELATÓRIO DE CLIENTE -->
+    <div id="subpage-relatorio-cliente" class="card">
+
+        <div class="chart-container">
+            <h3>Faturamento Mensal Consolidado</h3>
+
+            <div id="grafico-barras-anual" class="chart-bars">
+            </div>
+        </div>
+
+        <div id="cliente-kpis-bloco"
+             class="dashboard-grid"
+             style="display:none; margin-top:20px;">
+
+            <div class="kpi-card">
+                <span class="kpi-label">Total Gasto</span>
+                <div id="kpi-cliente-gasto" class="kpi-val">
+                    R$ 0,00
+                </div>
+            </div>
+
+            <div class="kpi-card">
+                <span class="kpi-label">Quantidade de Compras</span>
+                <div id="kpi-cliente-compras" class="kpi-val">
+                    0 pedidos
+                </div>
+            </div>
+
+        </div>
+
+        <div id="cliente-tabela-bloco"
+             class="card"
+             style="display:none; margin-top:20px;">
+
+            <h3>Histórico de Compras</h3>
+
+            <div class="table-wrap">
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Pedido</th>
+                            <th>Data</th>
+                            <th>Itens</th>
+                            <th>Pagamento</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="table-cliente-historico">
+                    </tbody>
+
+                </table>
+            </div>
+
         </div>
 
     </div>
 
+</div>
+
     <!-- ============================================================
          SCRIPTS (somente links, SEM script inline)
     ============================================================ -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script src="../assets/js/api.js"></script>
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/clientes.js"></script>
+    <script src="../assets/js/produtos.js"></script>
     <script src="../assets/js/relatorios.js"></script>
 
 </body>

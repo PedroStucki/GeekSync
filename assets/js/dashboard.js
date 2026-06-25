@@ -5,9 +5,8 @@
 //  INICIALIZAÇÃO
 // ============================================================
 
-document.addEventListener("DOMContentLoaded", async () => {
-    await carregarDashboard();
-});
+// Inicializacao feita pelo main.js -> inicializarModulo('dashboard'),
+// depois do login e do fetch do HTML. (Nao inicializar aqui no load.)
 
 // ============================================================
 //  CARREGAR DADOS DO DASHBOARD
@@ -164,3 +163,5 @@ function formatarData(data) {
         minute: '2-digit'
     });
 }
+
+window.carregarDashboard = carregarDashboard;

@@ -692,8 +692,12 @@ const apiVendasMock = {
 };
 
 // Substituir as APIs reais pelos mocks
-window.apiClientes = apiClientesMock;
-window.apiProdutos = apiProdutosMock;
-window.apiVendas = apiVendasMock;
+// Mesclar os metodos mock DENTRO dos objetos reais (const tem prioridade sobre window).
+Object.assign(apiClientes, apiClientesMock);
+Object.assign(apiProdutos, apiProdutosMock);
+Object.assign(apiVendas, apiVendasMock);
+window.apiClientes = apiClientes;
+window.apiProdutos = apiProdutos;
+window.apiVendas = apiVendas;
 
 console.log('✅ MOCK DATA carregado com sucesso!');

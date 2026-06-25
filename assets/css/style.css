@@ -1219,3 +1219,238 @@ input[readonly] {
         justify-content: center;
     }
 }
+
+/* ========== TELA DE PDV / CAIXA ========== */
+.pdv-container {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 20px;
+  height: calc(100vh - 120px);
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .pdv-container {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+
+.pdv-painel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.pdv-form-group {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 576px) {
+  .pdv-form-group {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cart-table-wrapper {
+  overflow-y: auto;
+  max-height: calc(100vh - 340px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.badge-desconto {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: var(--success);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.resumo-card {
+  background: var(--surface2);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.resumo-linha {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.resumo-linha.total {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--white);
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: 8px;
+}
+
+.resumo-linha .valor-desconto {
+  color: var(--success);
+  font-weight: 600;
+}
+
+/* ========== MÓDULO DE RELATÓRIOS E DASHBOARD ========== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.kpi-card .kpi-label {
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.kpi-card .kpi-val {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+/* CONTAINER DO GRÁFICO */
+.chart-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.chart-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 220px;
+  padding-top: 25px;
+  border-bottom: 2px solid var(--border);
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.chart-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.chart-bar-fill {
+  width: 100%;
+  max-width: 38px;
+  background: linear-gradient(to top, var(--blue-d), var(--blue));
+  border-radius: 6px 6px 0 0;
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s;
+  position: relative;
+  cursor: pointer;
+}
+
+.chart-bar-fill:hover {
+  background: linear-gradient(to top, var(--blue), var(--blue-l));
+}
+
+/* TOOLTIP DO GRÁFICO */
+.chart-bar-tooltip {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  color: var(--text);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s, visibility 0.15s;
+  pointer-events: none;
+  box-shadow: var(--shadow);
+  z-index: 10;
+}
+
+.chart-bar-fill:hover .chart-bar-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.chart-label {
+  font-size: .75rem;
+  color: var(--muted);
+  margin-top: 10px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+/* ============================================================
+   PDV — classes form-label / form-input (faltavam no CSS)
+   Usadas em pages/pdv.html. Alinhadas ao estilo de .form-group
+   ============================================================ */
+.form-label {
+    display: block;
+    font-size: .78rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+}
+
+.form-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    color: var(--text);
+    padding: 11px 14px;
+    border-radius: var(--radius);
+    font-size: .95rem;
+    outline: none;
+    transition: border .2s;
+    font-family: inherit;
+}
+
+.form-input:focus {
+    border-color: var(--blue);
+}
+
+/* Logo dentro de .logo-wrap (login + sidebar) */
+.logo-wrap img {
+    max-width: 180px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+.sidebar .logo-wrap img {
+    max-width: 150px;
+}
