@@ -1454,3 +1454,569 @@ input[readonly] {
 .sidebar .logo-wrap img {
     max-width: 150px;
 }
+
+/* ============================================================
+   LISTAGEM DE VENDAS - ESTILOS ESPECÍFICOS
+   ============================================================ */
+
+/* Container da listagem */
+#section-vendas {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+/* Badges de status */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 600;
+}
+
+.badge-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--success);
+}
+
+.badge-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--danger);
+}
+
+.badge-warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--warning);
+}
+
+.badge-info {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--blue);
+}
+
+/* Badge de pagamento */
+.badge-pagamento {
+    background: var(--surface2);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: .75rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+/* Linha de venda cancelada */
+.venda-cancelada {
+    opacity: 0.7;
+    background: rgba(239, 68, 68, 0.03);
+}
+
+.venda-cancelada td {
+    text-decoration: line-through;
+    text-decoration-color: rgba(239, 68, 68, 0.3);
+}
+
+.venda-cancelada .badge-pagamento {
+    opacity: 0.5;
+}
+
+/* Filtros da listagem */
+.filtros-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    background: var(--surface);
+    padding: 16px 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.filtros-container .form-group {
+    flex: 1;
+    min-width: 150px;
+    margin-bottom: 0;
+}
+
+.filtros-container .form-group label {
+    font-size: .7rem;
+    margin-bottom: 4px;
+}
+
+.filtros-container .form-group input,
+.filtros-container .form-group select {
+    padding: 8px 12px;
+    font-size: .85rem;
+}
+
+/* Botões de ação na listagem */
+.btn-sm {
+    padding: 6px 14px;
+    font-size: .8rem;
+}
+
+.btn-sm i {
+    font-size: 1rem;
+}
+
+.btn-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* Detalhes da venda (modal) */
+.modal-detalhes-venda {
+    max-width: 600px;
+}
+
+.modal-detalhes-venda .item-lista {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: .9rem;
+}
+
+.modal-detalhes-venda .item-lista:last-child {
+    border-bottom: none;
+}
+
+.modal-detalhes-venda .item-nome {
+    font-weight: 500;
+}
+
+.modal-detalhes-venda .item-preco {
+    color: var(--muted);
+}
+
+.modal-detalhes-venda .total-venda {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--blue);
+    padding-top: 12px;
+    margin-top: 12px;
+    border-top: 2px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Contador de vendas */
+.vendas-stats {
+    display: flex;
+    gap: 20px;
+    padding: 12px 0;
+    font-size: .9rem;
+}
+
+.vendas-stats .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.vendas-stats .stat-item .numero {
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.stat-aberta .numero { color: var(--success); }
+.stat-cancelada .numero { color: var(--danger); }
+.stat-total .numero { color: var(--blue); }
+
+/* Responsivo para a listagem */
+@media (max-width: 768px) {
+    .filtros-container {
+        flex-direction: column;
+    }
+    
+    .filtros-container .form-group {
+        min-width: 100%;
+    }
+    
+    .vendas-stats {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+    }
+    
+    .btn-group .btn-sm {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    #section-vendas .table-wrap {
+        overflow-x: auto;
+    }
+    
+    #section-vendas table {
+        min-width: 600px;
+        font-size: .8rem;
+    }
+    
+    #section-vendas table th,
+    #section-vendas table td {
+        padding: 8px 10px;
+    }
+}
+
+/* Animação ao carregar vendas */
+@keyframes fadeSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#lista-vendas-container .card {
+    animation: fadeSlideDown 0.3s ease;
+}
+
+/* Scrollbar personalizada para a tabela */
+#section-vendas .table-wrap::-webkit-scrollbar {
+    height: 6px;
+}
+
+#section-vendas .table-wrap::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+#section-vendas .table-wrap::-webkit-scrollbar-thumb {
+    background: var(--surface2);
+    border-radius: 3px;
+}
+
+/* Toast notifications */
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 400px;
+}
+
+.toast {
+    padding: 14px 20px;
+    border-radius: var(--radius);
+    color: white;
+    font-weight: 500;
+    font-size: .9rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    animation: slideInRight 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toast-success { background: var(--success); }
+.toast-danger { background: var(--danger); }
+.toast-warning { background: var(--warning); color: #111827; }
+.toast-info { background: var(--blue); }
+
+.toast i {
+    font-size: 1.2rem;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Botão desabilitado com estilo consistente */
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn:disabled:hover {
+    transform: none;
+}
+
+/* Cores para os status */
+.status-aberta {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.status-cancelada {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+/* Lista vazia estilizada */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+}
+
+.empty-state i {
+    font-size: 48px;
+    opacity: 0.3;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.empty-state h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+.empty-state p {
+    font-size: .9rem;
+}
+
+/* ============================================================
+   ESTILOS ESPECÍFICOS PARA A PÁGINA DE VENDAS
+   Adicione ao final do seu style.css
+   ============================================================ */
+
+/* ===== KPI CARDS ===== */
+.kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    transition: all 0.2s;
+}
+
+.kpi-card:hover {
+    border-color: var(--blue);
+    transform: translateY(-2px);
+}
+
+.kpi-card .kpi-label {
+    color: var(--muted);
+    font-size: .78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 4px;
+}
+
+.kpi-card .kpi-val {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--white);
+}
+
+/* ===== STATUS BADGE ===== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 600;
+}
+
+.badge-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--success);
+}
+
+.badge-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--danger);
+}
+
+.badge-warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--warning);
+}
+
+.badge-info {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--blue);
+}
+
+/* ===== BADGE PAGAMENTO ===== */
+.badge-pagamento {
+    background: var(--surface2);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: .75rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+/* ===== LINHA DE VENDA CANCELADA ===== */
+.venda-cancelada {
+    opacity: 0.7;
+    background: rgba(239, 68, 68, 0.03);
+}
+
+.venda-cancelada td {
+    text-decoration: line-through;
+    text-decoration-color: rgba(239, 68, 68, 0.3);
+}
+
+.venda-cancelada .badge-pagamento {
+    opacity: 0.5;
+}
+
+/* ===== FILTROS ===== */
+#page-vendas .form-group {
+    margin-bottom: 0;
+}
+
+#page-vendas .form-group label {
+    font-size: .7rem;
+    margin-bottom: 4px;
+}
+
+#page-vendas .form-group input,
+#page-vendas .form-group select {
+    padding: 8px 12px;
+    font-size: .85rem;
+}
+
+/* ===== MODAL DETALHES ===== */
+#modal-detalhes-venda .modal {
+    max-width: 600px;
+}
+
+#modal-detalhes-venda .modal h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* ===== BOTÃO SMALL ===== */
+.btn-sm {
+    padding: 6px 14px;
+    font-size: .8rem;
+}
+
+.btn-sm i {
+    font-size: 1rem;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .kpi-card .kpi-val {
+        font-size: 1.3rem;
+    }
+    
+    #page-vendas .table-wrap {
+        overflow-x: auto;
+    }
+    
+    #page-vendas table {
+        min-width: 700px;
+        font-size: .8rem;
+    }
+    
+    #page-vendas table th,
+    #page-vendas table td {
+        padding: 8px 10px;
+    }
+    
+    .btn-sm {
+        padding: 4px 10px;
+        font-size: .75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    #page-vendas .card-body > div {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .modal {
+        margin: 16px;
+        padding: 20px;
+    }
+}
+
+/* ===== SCROLLBAR ===== */
+#page-vendas .table-wrap::-webkit-scrollbar {
+    height: 6px;
+}
+
+#page-vendas .table-wrap::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+#page-vendas .table-wrap::-webkit-scrollbar-thumb {
+    background: var(--surface2);
+    border-radius: 3px;
+}
+
+#page-vendas .table-wrap::-webkit-scrollbar-thumb:hover {
+    background: var(--border);
+}
+
+/* ===== ANIMAÇÃO AO CARREGAR ===== */
+@keyframes fadeSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#lista-vendas-container .table-wrap {
+    animation: fadeSlideDown 0.3s ease;
+}
+
+/* ===== EMPTY STATE ===== */
+#lista-vendas-container .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+}
+
+#lista-vendas-container .empty-state i {
+    font-size: 48px;
+    opacity: 0.3;
+    display: block;
+    margin-bottom: 16px;
+}
+
+#lista-vendas-container .empty-state h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+#lista-vendas-container .empty-state p {
+    font-size: .9rem;
+}

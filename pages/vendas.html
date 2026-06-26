@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vendas</title>
+    <title>Vendas - GeekSync</title>
     
     <!-- CSS -->
-    <link rel="stylesheet" href="../GeekSync-front/assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -15,17 +15,21 @@
 
 <body>
 
-    <div id="section-vendas" class="sub-page" style="display:block;">
+    <div id="page-vendas" class="sub-page" style="display:block; padding:20px;">
 
-        <!-- Header -->
+        <!-- ============================================================
+             HEADER
+        ============================================================ -->
         <div class="page-header">
             <div>
                 <h1>🛒 Vendas</h1>
-                <p>Registre vendas, gerencie o carrinho e acompanhe o histórico</p>
+                <p style="color:var(--muted); font-size:14px;">Registre vendas, gerencie o carrinho e acompanhe o histórico</p>
             </div>
         </div>
 
-        <!-- Carrinho -->
+        <!-- ============================================================
+             CARRINHO DE COMPRAS
+        ============================================================ -->
         <div class="card">
             <div class="card-header">
                 <h5>🛍️ Carrinho de Compras</h5>
@@ -34,16 +38,15 @@
             <div class="card-body">
 
                 <!-- Seleção de Cliente -->
-                <div class="form-row" style="margin-bottom:18px;">
+                <div style="display:grid; grid-template-columns: 1fr auto; gap:12px; margin-bottom:18px;">
                     <div class="form-group" style="margin-bottom:0;">
-                        <label>Cliente *</label>
-                        <select id="clienteVenda">
+                        <label class="form-label">Cliente *</label>
+                        <select id="clienteVenda" class="form-input">
                             <option value="">Selecione um cliente...</option>
                         </select>
                     </div>
-                    <div class="form-group" style="margin-bottom:0;">
-                        <label>&nbsp;</label>
-                        <button class="btn btn-secondary" style="width:100%;" onclick="abrirModalNovoCliente()">
+                    <div class="form-group" style="margin-bottom:0; display:flex; align-items:flex-end;">
+                        <button class="btn btn-secondary" onclick="abrirModalNovoCliente()" style="height:44px; white-space:nowrap;">
                             <i class="bi bi-person-plus"></i>
                             Novo Cliente
                         </button>
@@ -51,22 +54,22 @@
                 </div>
 
                 <!-- Adicionar Itens -->
-                <div class="form-row" style="margin-bottom:18px; align-items:flex-end;">
+                <div style="display:grid; grid-template-columns: 2fr 0.8fr 1fr auto; gap:12px; margin-bottom:18px; align-items:flex-end;">
                     <div class="form-group" style="margin-bottom:0;">
-                        <label>Produto</label>
-                        <select id="produtoVenda">
+                        <label class="form-label">Produto</label>
+                        <select id="produtoVenda" class="form-input">
                             <option value="">Selecione um produto...</option>
                         </select>
                     </div>
                     <div class="form-group" style="margin-bottom:0;">
-                        <label>Qtd.</label>
-                        <input type="number" id="quantidadeItem" value="1" min="1" />
+                        <label class="form-label">Qtd.</label>
+                        <input type="number" id="quantidadeItem" class="form-input" value="1" min="1">
                     </div>
                     <div class="form-group" style="margin-bottom:0;">
-                        <label>Preço Unit.</label>
-                        <input type="text" id="precoUnitario" readonly style="background:var(--surface2); color:var(--muted);" />
+                        <label class="form-label">Preço Unit.</label>
+                        <input type="text" id="precoUnitario" class="form-input" readonly style="background:var(--surface2); color:var(--muted); cursor:not-allowed;">
                     </div>
-                    <button class="btn btn-primary" id="btnAdicionarItem" style="margin-bottom:0; height:44px;">
+                    <button class="btn btn-primary" id="btnAdicionarItem" style="height:44px; white-space:nowrap;">
                         <i class="bi bi-plus-circle"></i>
                         Adicionar
                     </button>
@@ -111,7 +114,7 @@
                             <span style="font-size:1.3rem; font-weight:700; color:var(--blue);" id="totalFinal">R$ 0,00</span>
                         </div>
                     </div>
-                    <button class="btn btn-success" id="btnFinalizarVenda">
+                    <button class="btn btn-success" id="btnFinalizarVenda" style="height:48px; padding:0 32px; font-size:1rem;">
                         <i class="bi bi-check-circle"></i>
                         Finalizar Venda
                     </button>
@@ -120,8 +123,10 @@
             </div>
         </div>
 
-        <!-- Histórico -->
-        <div class="card">
+        <!-- ============================================================
+             HISTÓRICO DE VENDAS
+        ============================================================ -->
+        <div class="card" style="margin-top:20px;">
             <div class="card-header">
                 <h5>📋 Histórico de Vendas</h5>
                 <button class="btn btn-secondary btn-sm" onclick="listarVendas()">
@@ -154,26 +159,31 @@
             </div>
         </div>
 
-        <!-- Cancelar Venda -->
-        <div class="card">
+        <!-- ============================================================
+             CANCELAR VENDA
+        ============================================================ -->
+        <div class="card" style="margin-top:20px; border-left: 4px solid var(--danger);">
             <div class="card-header">
-                <h5>❌ Cancelar Venda</h5>
+                <h5 style="color: var(--danger);">❌ Cancelar Venda</h5>
                 <span class="badge badge-warning">Apenas vendas com status ABERTA</span>
             </div>
             <div class="card-body">
                 <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
-                    <div class="form-group" style="flex:1; min-width:250px; margin-bottom:0;">
-                        <label>Selecione a venda para cancelar</label>
-                        <select id="vendaIdCancelar">
+                    <div class="form-group" style="flex:2; min-width:250px; margin-bottom:0;">
+                        <label class="form-label">Selecione a venda para cancelar</label>
+                        <select id="vendaIdCancelar" class="form-input">
                             <option value="">Nenhuma venda aberta disponível</option>
                         </select>
                     </div>
-                    <button class="btn btn-danger" id="btnCancelarVenda" style="margin-bottom:0;">
-                        <i class="bi bi-x-circle"></i>
-                        Cancelar Venda
-                    </button>
+                    <div class="form-group" style="flex:1; min-width:150px; margin-bottom:0;">
+                        <label class="form-label">&nbsp;</label>
+                        <button class="btn btn-danger" id="btnCancelarVenda" style="width:100%; height:44px;">
+                            <i class="bi bi-x-circle"></i>
+                            Cancelar Venda
+                        </button>
+                    </div>
                 </div>
-                <div style="margin-top:12px; font-size:.85rem; color:var(--muted);">
+                <div style="margin-top:12px; font-size:.85rem; color:var(--muted); display:flex; align-items:center; gap:6px;">
                     <i class="bi bi-info-circle"></i>
                     O cancelamento reverte o estoque dos produtos automaticamente.
                 </div>
@@ -183,38 +193,37 @@
     </div>
 
     <!-- ============================================================
-         MODAL - NOVO CLIENTE RÁPIDO
+         MODAL - NOVO CLIENTE
     ============================================================ -->
-
     <div class="modal-overlay" id="modalNovoCliente">
         <div class="modal">
             <h3>👤 Novo Cliente</h3>
-            <p style="color:var(--muted); font-size:.9rem;">Cadastre um cliente rapidamente para finalizar a venda.</p>
+            <p style="color:var(--muted); font-size:.9rem; margin-bottom:16px;">Cadastre um cliente rapidamente para finalizar a venda.</p>
 
             <div class="form-group">
-                <label>Nome *</label>
-                <input type="text" id="novoClienteNome" placeholder="Ex: João Silva" />
+                <label class="form-label">Nome *</label>
+                <input type="text" id="novoClienteNome" class="form-input" placeholder="Ex: João Silva">
                 <span class="error-msg" id="err-novo-cliente-nome">Campo obrigatório</span>
             </div>
 
             <div class="form-group">
-                <label>CPF *</label>
-                <input type="text" id="novoClienteCpf" placeholder="000.000.000-00" maxlength="14" oninput="maskCPF(this)" />
+                <label class="form-label">CPF *</label>
+                <input type="text" id="novoClienteCpf" class="form-input" placeholder="000.000.000-00" maxlength="14">
                 <span class="error-msg" id="err-novo-cliente-cpf">CPF inválido</span>
             </div>
 
             <div class="form-group">
-                <label>E-mail *</label>
-                <input type="email" id="novoClienteEmail" placeholder="joao@email.com" />
+                <label class="form-label">E-mail *</label>
+                <input type="email" id="novoClienteEmail" class="form-input" placeholder="joao@email.com">
                 <span class="error-msg" id="err-novo-cliente-email">E-mail inválido</span>
             </div>
 
             <div class="form-group">
-                <label>Telefone</label>
-                <input type="text" id="novoClienteTelefone" placeholder="(61) 99999-9999" maxlength="15" oninput="maskTel(this)" />
+                <label class="form-label">Telefone</label>
+                <input type="text" id="novoClienteTelefone" class="form-input" placeholder="(61) 99999-9999" maxlength="15">
             </div>
 
-            <div class="form-actions">
+            <div class="form-actions" style="margin-top:20px;">
                 <button class="btn btn-secondary" onclick="fecharModalNovoCliente()">Cancelar</button>
                 <button class="btn btn-primary" onclick="salvarNovoCliente()">
                     <i class="bi bi-check-lg"></i>
@@ -225,12 +234,38 @@
     </div>
 
     <!-- ============================================================
-         SCRIPTS (somente links, SEM script inline)
+         TOAST NOTIFICATIONS
+    ============================================================ -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ============================================================
+         SCRIPTS
     ============================================================ -->
     <script src="../assets/js/api.js"></script>
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/js/app.js"></script>
     <script src="../assets/js/vendas.js"></script>
+
+    <!-- ============================================================
+         INICIALIZAÇÃO
+    ============================================================ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carrega dados da venda
+            carregarDadosVenda();
+            
+            // Configura eventos
+            configurarEventosVendas();
+            
+            // Lista vendas
+            listarVendas();
+            
+            // Carrega vendas abertas para cancelamento
+            carregarVendasAbertas();
+            
+            console.log('✅ Página de Vendas inicializada!');
+        });
+    </script>
 
 </body>
 

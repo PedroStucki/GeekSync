@@ -122,7 +122,7 @@
                         <span id="pdv-total-geral" style="color:var(--blue);">R$ 0,00</span>
                     </div>
 
-                    <button type="button" class="btn btn-success" style="width:100%; padding:14px; font-size:16px; margin-top:10px;" onclick="finalizarVendaPDV()">
+                    <button id="btn-finalizar" type="button" class="btn btn-success" style="width:100%; padding:14px; font-size:16px; margin-top:10px;" onclick="finalizarVendaPDV()">
                         <i class="bi bi-check-circle"></i>
                         Confirmar e Finalizar Venda
                     </button>
@@ -138,6 +138,57 @@
         </div>
 
     </div>
+    <!-- Adicione esta seção abaixo do PDV Container -->
+<div id="section-vendas" style="margin-top: 40px;">
+    <div class="page-header" style="margin-bottom:20px;">
+        <div>
+            <h2>📋 Histórico de Vendas</h2>
+            <p style="color:var(--muted); font-size:14px;">Gerencie suas vendas registradas</p>
+        </div>
+        <div>
+            <button class="btn btn-secondary" onclick="atualizarListaVendas()">
+                <i class="bi bi-arrow-clockwise"></i> Atualizar
+            </button>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 150px;">
+            <label class="form-label">Status</label>
+            <select id="filtro-status" class="form-input" onchange="filtrarVendas()">
+                <option value="todos">Todos</option>
+                <option value="ABERTA">Abertas</option>
+                <option value="CANCELADA">Canceladas</option>
+            </select>
+        </div>
+        <div style="flex: 1; min-width: 150px;">
+            <label class="form-label">Data Início</label>
+            <input type="date" id="filtro-data-inicio" class="form-input" onchange="filtrarVendas()">
+        </div>
+        <div style="flex: 1; min-width: 150px;">
+            <label class="form-label">Data Fim</label>
+            <input type="date" id="filtro-data-fim" class="form-input" onchange="filtrarVendas()">
+        </div>
+        <div style="flex: 1; min-width: 150px;">
+            <label class="form-label">Cliente</label>
+            <input type="text" id="filtro-cliente" class="form-input" placeholder="Buscar cliente..." oninput="filtrarVendas()">
+        </div>
+    </div>
+
+    <!-- Lista de Vendas -->
+    <div class="card">
+        <div class="card-body">
+            <div id="lista-vendas-container">
+                <!-- Renderizado pelo JavaScript -->
+                <div style="text-align: center; padding: 40px; color: var(--muted);">
+                    <i class="bi bi-hourglass-split" style="font-size: 32px; display: block; margin-bottom: 8px;"></i>
+                    Carregando vendas...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
     <!-- ============================================================
          SCRIPTS
