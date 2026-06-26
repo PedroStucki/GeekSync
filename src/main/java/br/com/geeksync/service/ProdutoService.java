@@ -39,4 +39,10 @@ public class ProdutoService {
     public boolean necessitaReposicao(Produto produto) {
         return produto.getQtdEstoque() <= produto.getEstoqueMinimo();
     }
+
+    @Transactional
+    public void excluir(Long id) {
+        Produto produto = buscarPorId(id);
+        produtoRepository.delete(produto);
+    }
 }
